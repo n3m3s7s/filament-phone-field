@@ -1,38 +1,39 @@
 {
-  "name": "n3m3s7s/filament-phone-field",
-  "description": "A Filament 5 multi-country phone field powered by libphonenumber-for-php.",
-  "type": "library",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "N3m3s7s\\FilamentPhoneField\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "N3m3s7s\\FilamentPhoneField\\Tests\\": "tests/"
-    }
-  },
-  "require": {
-    "php": "^8.3",
-    "illuminate/support": "^13.0",
-    "illuminate/validation": "^13.0",
-    "filament/forms": "^5.0",
-    "filament/support": "^5.0",
-    "livewire/livewire": "^4.0",
-    "giggsey/libphonenumber-for-php": "^8.13"
-  },
-  "require-dev": {
-    "orchestra/testbench": "^9.0",
-    "phpunit/phpunit": "^11.0"
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "N3m3s7s\\FilamentPhoneField\\FilamentPhoneFieldServiceProvider"
-      ]
-    }
-  },
-  "minimum-stability": "stable",
-  "prefer-stable": true
+    "name": "n3m3s7s/filament-phone-field",
+    "description": "A Filament 5 multi-country phone field powered by libphonenumber-for-php.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "N3m3s7s\\FilamentPhoneField\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "N3m3s7s\\FilamentPhoneField\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.3",
+        "janczakb/blade-gravity-icons": "^1.0",
+        "filament/filament": "^5.0",
+        "giggsey/libphonenumber-for-php": "^9.0",
+        "illuminate/support": "^13.0",
+        "illuminate/validation": "^13.0",
+        "filament/forms": "^5.0",
+        "filament/support": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "N3m3s7s\\FilamentPhoneField\\FilamentPhoneFieldServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
