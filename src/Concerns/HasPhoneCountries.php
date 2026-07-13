@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldConcerns;
+namespace N3m3s7s\FilamentPhoneField\Concerns;
 
 use Closure;
 

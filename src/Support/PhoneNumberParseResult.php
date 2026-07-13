@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldSupport;
+namespace N3m3s7s\FilamentPhoneField\Support;
 
-use libphonenumberPhoneNumberType;
+use libphonenumber\PhoneNumberType;
 
 final readonly class PhoneNumberParseResult
 {

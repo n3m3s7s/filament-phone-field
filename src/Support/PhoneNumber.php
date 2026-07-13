@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldSupport;
+namespace N3m3s7s\FilamentPhoneField\Support;
 
-use N3m3s7sFilamentPhoneFieldEnumsPhoneType;
-use libphonenumberNumberParseException;
-use libphonenumberPhoneNumberFormat;
-use libphonenumberPhoneNumberType;
-use libphonenumberPhoneNumberUtil;
+use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberType;
+use libphonenumber\PhoneNumberUtil;
 
 final readonly class PhoneNumber
 {

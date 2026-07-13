@@ -1,34 +1,33 @@
 <?php
 
-declare(strict_types=1);
+namespace N3m3s7s\FilamentPhoneField;
 
-namespace N3m3s7sFilamentPhoneField;
+use Illuminate\Support\ServiceProvider;
 
-use IlluminateSupportServiceProvider;
-
-final class FilamentPhoneFieldServiceProvider extends ServiceProvider
+class FilamentPhoneFieldServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadViewsFrom(
-            path: __DIR__ . '/../resources/views',
-            namespace: 'filament-phone-field',
-        );
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'filament-phone-field');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'filament-phone-field');
 
-        $this->publishes([
-            __DIR__ . '/../config/filament-phone-field.php' => config_path('filament-phone-field.php'),
-        ], 'filament-phone-field-config');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../resources/lang' => lang_path('vendor/filament-phone-field'),
+            ], 'filament-phone-field-translations');
 
-        $this->publishes([
-            __DIR__ . '/../resources/views' => resource_path('views/vendor/filament-phone-field'),
-        ], 'filament-phone-field-views');
+            $this->publishes([
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/filament-phone-field'),
+            ], 'filament-phone-field-views');
+
+            $this->publishes([
+                __DIR__ . '/../config/filament-phone-field.php' => config_path('filament-phone-field.php'),
+            ], 'filament-phone-field-config');
+        }
     }
 
     public function register(): void
     {
-        $this->mergeConfigFrom(
-            path: __DIR__ . '/../config/filament-phone-field.php',
-            key: 'filament-phone-field',
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../config/filament-phone-field.php', 'filament-phone-field');
     }
 }

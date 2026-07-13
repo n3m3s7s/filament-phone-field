@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneField;
+namespace N3m3s7s\FilamentPhoneField;
 
 use Closure;
-use FilamentFormsComponentsField;
-use FilamentFormsComponentsSelect;
-use N3m3s7sFilamentPhoneFieldConcernsHasPhoneCountries;
-use N3m3s7sFilamentPhoneFieldEnumsPhoneType;
-use N3m3s7sFilamentPhoneFieldRulesValidPhoneNumber;
-use N3m3s7sFilamentPhoneFieldSupportPhoneCountryRepository;
-use N3m3s7sFilamentPhoneFieldSupportPhoneNumber;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Select;
+use N3m3s7s\FilamentPhoneField\Concerns\HasPhoneCountries;
+use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
+use N3m3s7s\FilamentPhoneField\Rules\ValidPhoneNumber;
+use N3m3s7s\FilamentPhoneField\Support\PhoneCountryRepository;
+use N3m3s7s\FilamentPhoneField\Support\PhoneNumber;
 
 final class PhoneField extends Field
 {
@@ -33,11 +33,13 @@ final class PhoneField extends Field
 
     protected ?string $internalCountryStatePath = null;
 
+    protected ?string $iconName = 'heroicon-m-phone';
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->prefixIcon('heroicon-m-phone');
+        $this->prefixIcon($this->getIcon());
 
         $this->afterStateHydrated(function (PhoneField $component, mixed $state): void {
             if (is_array($state)) {
@@ -128,6 +130,17 @@ final class PhoneField extends Field
                 required: $component->isRequired(),
             );
         });
+    }
+
+    public function icon(?string $icon): static
+    {
+        $this->iconName = $icon;
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->iconName;
     }
 
     public function mobile(): static
@@ -306,7 +319,7 @@ final class PhoneField extends Field
 
     /**
      * @param array<int, string> $countries
-     * @return array<int, FilamentFormsComponentsComponent>
+     * @return array<int, Filament\Forms\Components\Component>
      */
     public static function makeWithCountrySelect(
         string $phoneName,
@@ -326,7 +339,8 @@ final class PhoneField extends Field
 
         return [
             Select::make($countryName)
-                ->label(__('Country'))
+                //->label(__('Country'))
+                ->hideLabel()
                 ->options($options)
                 ->default($defaultCountry ?: config('filament-phone-field.default_country'))
                 ->searchable()
@@ -341,7 +355,7 @@ final class PhoneField extends Field
                 ->phoneType($type)
                 ->defaultCountry($defaultCountry)
                 ->saveAsE164()
-                ->label(__('Phone number')),
+                //->label($this->getLabel()),
         ];
     }
 }

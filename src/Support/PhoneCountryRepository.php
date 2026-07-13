@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldSupport;
+namespace N3m3s7s\FilamentPhoneField\Support;
 
-use IlluminateSupportCollection;
-use libphonenumberPhoneNumberUtil;
+use Illuminate\Support\Collection;
+use libphonenumber\PhoneNumberUtil;
 
 final class PhoneCountryRepository
 {

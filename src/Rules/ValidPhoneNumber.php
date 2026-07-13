@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldRules;
+namespace N3m3s7s\FilamentPhoneField\Rules;
 
 use Closure;
-use IlluminateContractsValidationValidationRule;
-use N3m3s7sFilamentPhoneFieldEnumsPhoneType;
-use N3m3s7sFilamentPhoneFieldSupportPhoneNumber;
+use Illuminate\Contracts\Validation\ValidationRule;
+use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
+use N3m3s7s\FilamentPhoneField\Support\PhoneNumber;
 
 final readonly class ValidPhoneNumber implements ValidationRule
 {
@@ -46,18 +46,18 @@ final readonly class ValidPhoneNumber implements ValidationRule
         }
 
         match ($result->error) {
-            'invalid_country' => $fail(__('The phone number country is not allowed.')),
+            'invalid_country' => $fail(__('filament-phone-field::validation.invalid_country')),
             'invalid_type' => $fail($this->invalidTypeMessage()),
-            default => $fail(__('The phone number is invalid.')),
+            default => $fail(__('filament-phone-field::validation.invalid_number')),
         };
     }
 
     private function invalidTypeMessage(): string
     {
         return match ($this->type) {
-            PhoneType::Mobile => __('The phone number must be a valid mobile number.'),
-            PhoneType::Landline => __('The phone number must be a valid landline number.'),
-            PhoneType::Any => __('The phone number is invalid.'),
+            PhoneType::Mobile => __('filament-phone-field::validation.invalid_mobile_number'),
+            PhoneType::Landline => __('filament-phone-field::validation.invalid_landline_number'),
+            PhoneType::Any => __('filament-phone-field::validation.invalid_number'),
         };
     }
 }

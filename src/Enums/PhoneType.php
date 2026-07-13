@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldEnums;
+namespace N3m3s7s\FilamentPhoneField\Enums;
 
-use libphonenumberPhoneNumberType as LibPhoneNumberType;
+use libphonenumber\PhoneNumberType as LibPhoneNumberType;
 
 enum PhoneType: string
 {

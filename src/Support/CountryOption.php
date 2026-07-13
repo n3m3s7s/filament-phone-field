@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3m3s7sFilamentPhoneFieldSupport;
+namespace N3m3s7s\FilamentPhoneField\Support;
 
 final readonly class CountryOption
 {
