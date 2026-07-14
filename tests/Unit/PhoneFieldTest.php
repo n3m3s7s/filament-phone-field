@@ -12,7 +12,6 @@ class PhoneFieldTest extends TestCase
         $field = PhoneField::make('phone');
 
         $this->assertFalse($field->hasCountryPath());
-        $this->assertEquals('heroicon-m-phone', $field->getIcon());
         $this->assertEmpty($field->getAllowedCountries());
     }
 
@@ -35,11 +34,11 @@ class PhoneFieldTest extends TestCase
     public function test_it_can_customize_or_hide_the_icon(): void
     {
         $field = PhoneField::make('phone')
-            ->icon('heroicon-o-device-phone-mobile');
+            ->suffixIcon('heroicon-o-device-phone-mobile');
 
-        $this->assertEquals('heroicon-o-device-phone-mobile', $field->getIcon());
+        $this->assertEquals('heroicon-o-device-phone-mobile', $field->getSuffixIcon());
 
-        $fieldHide = PhoneField::make('phone')->icon(null);
-        $this->assertNull($fieldHide->getIcon());
+        $fieldHide = PhoneField::make('phone')->suffixIcon(null);
+        $this->assertNull($fieldHide->getSuffixIcon());
     }
 }

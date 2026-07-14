@@ -103,16 +103,6 @@ final class PhoneCountryRepository
 
     private function countryName(string $country): string
     {
-        $locale = app()->getLocale();
-
-        if (class_exists(Locale::class)) {
-            $name = Locale::getDisplayRegion("-{$country}", $locale);
-
-            if (is_string($name) && $name !== '') {
-                return $name;
-            }
-        }
-
-        return $country;
+        return __('filament-phone-field::countries.' . strtoupper($country));
     }
 }

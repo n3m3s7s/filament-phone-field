@@ -6,4 +6,5 @@ return [
     'invalid_mobile_number' => 'The phone number must be a valid mobile number.',
     'invalid_landline_number' => 'The phone number must be a valid landline number.',
     'search_country' => 'Search country...',
+    'search_no_results' => 'No country found.',
 ];

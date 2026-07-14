@@ -15,14 +15,14 @@ trait HasPhoneCountries
     /**
      * @param array<int, string>|Closure|null $countries
      */
-    public function countries(array | Closure | null $countries): static
+    public function countries(array | Closure | null $countries): self
     {
         $this->countries = $countries;
 
         return $this;
     }
 
-    public function defaultCountry(string | Closure | null $country): static
+    public function defaultCountry(string | Closure | null $country): self
     {
         $this->defaultCountry = $country;
 

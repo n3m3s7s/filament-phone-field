@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N3m3s7s\FilamentPhoneField;
 
 use Closure;
-use Filament\Forms\Components\Field;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use N3m3s7s\FilamentPhoneField\Concerns\HasPhoneCountries;
 use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
@@ -13,7 +13,7 @@ use N3m3s7s\FilamentPhoneField\Rules\ValidPhoneNumber;
 use N3m3s7s\FilamentPhoneField\Support\PhoneCountryRepository;
 use N3m3s7s\FilamentPhoneField\Support\PhoneNumber;
 
-final class PhoneField extends Field
+final class PhoneField extends TextInput
 {
     use HasPhoneCountries;
 
@@ -33,13 +33,19 @@ final class PhoneField extends Field
 
     protected ?string $internalCountryStatePath = null;
 
-    protected ?string $iconName = 'heroicon-m-phone';
+    protected string|Closure|\Illuminate\Contracts\Support\Htmlable|null|\BackedEnum $suffixIcon = 'heroicon-m-phone';
+/*
+
+
+    protected ?string $suffixIcon = null;
+
+    protected ?string $prefixIconColor = 'primary';
+
+    protected ?string $suffixIconColor = 'primary';*/
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->prefixIcon($this->getIcon());
 
         $this->afterStateHydrated(function (PhoneField $component, mixed $state): void {
             if (is_array($state)) {
@@ -61,37 +67,42 @@ final class PhoneField extends Field
                 value: (string) $state,
                 country: $component->getSelectedCountry(),
                 allowedCountries: $component->getCountries(),
-                type: PhoneType::Any,
+                type: $component->getPhoneType(),
             );
 
             if (! $result->valid) {
                 return;
             }
 
-            $component->state($result->international);
+            $component->state($result->national);
             $component->setSelectedCountry($result->country);
         });
 
         $this->afterStateUpdated(function (PhoneField $component, mixed $state): void {
-            if (! $component->shouldAutoDetectCountry()) {
-                return;
-            }
-
             if (! is_scalar($state) || trim((string) $state) === '') {
                 return;
             }
 
-            $country = $component->detectCountryFromState();
+            $result = PhoneNumber::make()->parse(
+                value: (string) $state,
+                country: $component->getSelectedCountry(),
+                allowedCountries: $component->getCountries(),
+                type: $component->getPhoneType(),
+            );
 
-            if ($country === null) {
+            if (! $result->valid) {
                 return;
             }
 
-            if (! in_array($country, $component->getCountries(), true)) {
-                return;
+            // Se abilitato, rileva il prefisso se l'utente lo incolla a mano
+            if ($component->shouldAutoDetectCountry() && in_array($result->country, $component->getCountries(), true)) {
+                $component->setSelectedCountry($result->country);
             }
 
-            $component->setSelectedCountry($country);
+            // FIX: Forza l'aggiornamento dell'input al formato nazionale.
+            // Se l'utente incolla "+39 333 123456", Livewire lo trasforma in "333 123456"
+            // e sposta il dropdown su IT.
+            $component->state($result->national);
         });
 
         $this->dehydrateStateUsing(function (PhoneField $component, mixed $state): mixed {
@@ -131,33 +142,78 @@ final class PhoneField extends Field
             );
         });
     }
-
-    public function icon(?string $icon): static
+/*
+    public function prefixIcon(?string $icon): self
     {
-        $this->iconName = $icon;
+        $this->prefixIcon = $icon;
         return $this;
     }
 
-    public function getIcon(): ?string
+    public function getPrefixIcon(): ?string
     {
-        return $this->iconName;
+        return $this->prefixIcon;
     }
 
-    public function mobile(): static
+    public function prefixIconColor(?string $color): self
+    {
+        $this->prefixIconColor = $color;
+        return $this;
+    }
+
+    public function getPrefixIconColor(): ?string
+    {
+        return $this->prefixIconColor;
+    }
+
+    public function suffixIcon(?string $icon): self
+    {
+        $this->suffixIcon = $icon;
+        return $this;
+    }
+
+    public function getSuffixIcon(): ?string
+    {
+        return $this->suffixIcon;
+    }
+
+    public function suffixIconColor(?string $color): self
+    {
+        $this->suffixIconColor = $color;
+        return $this;
+    }
+
+    public function getSuffixIconColor(): ?string
+    {
+        return $this->suffixIconColor;
+    }*/
+
+    public function mobile(): self
     {
         $this->phoneType = PhoneType::Mobile;
 
+        $this->suffixIcon = 'heroicon-o-device-phone-mobile';
+
         return $this;
     }
 
-    public function landline(): static
+    public function mobileOnly(): self
+    {
+        return $this->mobile();
+    }
+
+    public function landline(): self
     {
         $this->phoneType = PhoneType::Landline;
 
         return $this;
     }
 
-    public function phoneType(PhoneType | string | Closure $type): static
+    public function fixedLineOnly(): self
+    {
+        return $this->landline();
+    }
+
+    public function phoneType(PhoneType | string | Closure $type): self
     {
         $this->phoneType = $type instanceof PhoneType || $type instanceof Closure
             ? $type
@@ -166,35 +222,35 @@ final class PhoneField extends Field
         return $this;
     }
 
-    public function autoDetectCountry(bool | Closure $condition = true): static
+    public function autoDetectCountry(bool | Closure $condition = true): self
     {
         $this->autoDetectCountry = $condition;
 
         return $this;
     }
 
-    public function formatStateUsingLibPhoneNumber(bool | Closure $condition = true): static
+    public function formatStateUsingLibPhoneNumber(bool | Closure $condition = true): self
     {
         $this->formatStateUsingLibPhoneNumber = $condition;
 
         return $this;
     }
 
-    public function saveAsE164(bool | Closure $condition = true): static
+    public function saveAsE164(bool | Closure $condition = true): self
     {
         $this->saveAsE164 = $condition;
 
         return $this;
     }
 
-    public function saveAsArray(bool | Closure $condition = true): static
+    public function saveAsArray(bool | Closure $condition = true): self
     {
         $this->saveAsArray = $condition;
 
         return $this;
     }
 
-    public function countryStatePath(?string $path): static
+    public function countryStatePath(?string $path): self
     {
         $this->countryStatePath = $path;
 
@@ -248,11 +304,7 @@ final class PhoneField extends Field
 
     public function getInternalCountryStatePath(): string
     {
-        if ($this->internalCountryStatePath !== null) {
-            return $this->internalCountryStatePath;
-        }
-
-        return $this->internalCountryStatePath = $this->getStatePath() . '_country';
+        return $this->internalCountryStatePath ?? ($this->internalCountryStatePath = $this->getStatePath() . '_country');
     }
 
     public function getSelectedCountry(): ?string
@@ -275,8 +327,9 @@ final class PhoneField extends Field
             return;
         }
 
+        $component = $this->getLivewire();
         data_set(
-            target: $this->getLivewire(),
+            target: $component,
             key: $this->getCountryStatePath(),
             value: $country,
         );
@@ -307,7 +360,7 @@ final class PhoneField extends Field
             value: (string) $state,
             country: $this->getSelectedCountry(),
             allowedCountries: $this->getCountries(),
-            type: PhoneType::Any,
+            type: $this->phoneType,
         );
 
         if (! $result->valid) {
@@ -315,47 +368,5 @@ final class PhoneField extends Field
         }
 
         return $result->country;
-    }
-
-    /**
-     * @param array<int, string> $countries
-     * @return array<int, Filament\Forms\Components\Component>
-     */
-    public static function makeWithCountrySelect(
-        string $phoneName,
-        string $countryName,
-        array $countries,
-        PhoneType $type = PhoneType::Any,
-        ?string $defaultCountry = null,
-    ): array {
-        $repository = app(PhoneCountryRepository::class);
-
-        $options = $repository
-            ->all($countries)
-            ->mapWithKeys(fn ($option): array => [
-                $option->iso => "{$option->name} +{$option->dialCode}",
-            ])
-            ->all();
-
-        return [
-            Select::make($countryName)
-                //->label(__('Country'))
-                ->hideLabel()
-                ->options($options)
-                ->default($defaultCountry ?: config('filament-phone-field.default_country'))
-                ->searchable()
-                ->preload()
-                ->native(false)
-                ->required()
-                ->live(),
-
-            self::make($phoneName)
-                ->countries($countries)
-                ->countryStatePath($countryName)
-                ->phoneType($type)
-                ->defaultCountry($defaultCountry)
-                ->saveAsE164()
-                //->label($this->getLabel()),
-        ];
     }
 }
