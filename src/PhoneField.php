@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace N3m3s7s\FilamentPhoneField;
 
+use BackedEnum;
 use Closure;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
 use N3m3s7s\FilamentPhoneField\Concerns\HasPhoneCountries;
 use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
 use N3m3s7s\FilamentPhoneField\Rules\ValidPhoneNumber;
@@ -19,29 +19,29 @@ final class PhoneField extends TextInput
 
     protected string $view = 'filament-phone-field::components.phone-field';
 
-    protected PhoneType | Closure $phoneType = PhoneType::Any;
+    protected PhoneType|Closure $phoneType = PhoneType::Any;
 
-    protected bool | Closure $autoDetectCountry = true;
+    protected bool|Closure $autoDetectCountry = true;
 
-    protected bool | Closure $formatStateUsingLibPhoneNumber = true;
+    protected bool|Closure $formatStateUsingLibPhoneNumber = true;
 
-    protected bool | Closure $saveAsE164 = true;
+    protected bool|Closure $saveAsE164 = true;
 
-    protected bool | Closure $saveAsArray = false;
+    protected bool|Closure $saveAsArray = false;
 
     protected ?string $countryStatePath = null;
 
     protected ?string $internalCountryStatePath = null;
 
-    protected string|Closure|\Illuminate\Contracts\Support\Htmlable|null|\BackedEnum $suffixIcon = 'heroicon-m-phone';
-/*
+    protected string|Closure|\Illuminate\Contracts\Support\Htmlable|null|BackedEnum $suffixIcon = 'heroicon-m-phone';
+    /*
 
 
-    protected ?string $suffixIcon = null;
+        protected ?string $suffixIcon = null;
 
-    protected ?string $prefixIconColor = 'primary';
+        protected ?string $prefixIconColor = 'primary';
 
-    protected ?string $suffixIconColor = 'primary';*/
+        protected ?string $suffixIconColor = 'primary';*/
 
     protected function setUp(): void
     {
@@ -59,7 +59,7 @@ final class PhoneField extends TextInput
                 $state = $phone;
             }
 
-            if (! is_scalar($state) || trim((string) $state) === '') {
+            if (! is_scalar($state) || mb_trim((string) $state) === '') {
                 return;
             }
 
@@ -79,7 +79,7 @@ final class PhoneField extends TextInput
         });
 
         $this->afterStateUpdated(function (PhoneField $component, mixed $state): void {
-            if (! is_scalar($state) || trim((string) $state) === '') {
+            if (! is_scalar($state) || mb_trim((string) $state) === '') {
                 return;
             }
 
@@ -106,7 +106,7 @@ final class PhoneField extends TextInput
         });
 
         $this->dehydrateStateUsing(function (PhoneField $component, mixed $state): mixed {
-            if (! is_scalar($state) || trim((string) $state) === '') {
+            if (! is_scalar($state) || mb_trim((string) $state) === '') {
                 return $component->shouldSaveAsArray()
                     ? ['number' => null, 'country' => $component->getSelectedCountry()]
                     : null;
@@ -142,50 +142,50 @@ final class PhoneField extends TextInput
             );
         });
     }
-/*
-    public function prefixIcon(?string $icon): self
-    {
-        $this->prefixIcon = $icon;
-        return $this;
-    }
+    /*
+        public function prefixIcon(?string $icon): self
+        {
+            $this->prefixIcon = $icon;
+            return $this;
+        }
 
-    public function getPrefixIcon(): ?string
-    {
-        return $this->prefixIcon;
-    }
+        public function getPrefixIcon(): ?string
+        {
+            return $this->prefixIcon;
+        }
 
-    public function prefixIconColor(?string $color): self
-    {
-        $this->prefixIconColor = $color;
-        return $this;
-    }
+        public function prefixIconColor(?string $color): self
+        {
+            $this->prefixIconColor = $color;
+            return $this;
+        }
 
-    public function getPrefixIconColor(): ?string
-    {
-        return $this->prefixIconColor;
-    }
+        public function getPrefixIconColor(): ?string
+        {
+            return $this->prefixIconColor;
+        }
 
-    public function suffixIcon(?string $icon): self
-    {
-        $this->suffixIcon = $icon;
-        return $this;
-    }
+        public function suffixIcon(?string $icon): self
+        {
+            $this->suffixIcon = $icon;
+            return $this;
+        }
 
-    public function getSuffixIcon(): ?string
-    {
-        return $this->suffixIcon;
-    }
+        public function getSuffixIcon(): ?string
+        {
+            return $this->suffixIcon;
+        }
 
-    public function suffixIconColor(?string $color): self
-    {
-        $this->suffixIconColor = $color;
-        return $this;
-    }
+        public function suffixIconColor(?string $color): self
+        {
+            $this->suffixIconColor = $color;
+            return $this;
+        }
 
-    public function getSuffixIconColor(): ?string
-    {
-        return $this->suffixIconColor;
-    }*/
+        public function getSuffixIconColor(): ?string
+        {
+            return $this->suffixIconColor;
+        }*/
 
     public function mobile(): self
     {
@@ -213,7 +213,7 @@ final class PhoneField extends TextInput
         return $this->landline();
     }
 
-    public function phoneType(PhoneType | string | Closure $type): self
+    public function phoneType(PhoneType|string|Closure $type): self
     {
         $this->phoneType = $type instanceof PhoneType || $type instanceof Closure
             ? $type
@@ -222,28 +222,28 @@ final class PhoneField extends TextInput
         return $this;
     }
 
-    public function autoDetectCountry(bool | Closure $condition = true): self
+    public function autoDetectCountry(bool|Closure $condition = true): self
     {
         $this->autoDetectCountry = $condition;
 
         return $this;
     }
 
-    public function formatStateUsingLibPhoneNumber(bool | Closure $condition = true): self
+    public function formatStateUsingLibPhoneNumber(bool|Closure $condition = true): self
     {
         $this->formatStateUsingLibPhoneNumber = $condition;
 
         return $this;
     }
 
-    public function saveAsE164(bool | Closure $condition = true): self
+    public function saveAsE164(bool|Closure $condition = true): self
     {
         $this->saveAsE164 = $condition;
 
         return $this;
     }
 
-    public function saveAsArray(bool | Closure $condition = true): self
+    public function saveAsArray(bool|Closure $condition = true): self
     {
         $this->saveAsArray = $condition;
 
@@ -304,7 +304,7 @@ final class PhoneField extends TextInput
 
     public function getInternalCountryStatePath(): string
     {
-        return $this->internalCountryStatePath ?? ($this->internalCountryStatePath = $this->getStatePath() . '_country');
+        return $this->internalCountryStatePath ?? ($this->internalCountryStatePath = $this->getStatePath().'_country');
     }
 
     public function getSelectedCountry(): ?string
@@ -312,8 +312,8 @@ final class PhoneField extends TextInput
         $path = $this->getCountryStatePath();
         $value = data_get($this->getLivewire(), $path);
 
-        if (is_string($value) && trim($value) !== '') {
-            return strtoupper(trim($value));
+        if (is_string($value) && mb_trim($value) !== '') {
+            return mb_strtoupper(mb_trim($value));
         }
 
         return $this->getDefaultCountry();
@@ -321,7 +321,7 @@ final class PhoneField extends TextInput
 
     public function setSelectedCountry(?string $country): void
     {
-        $country = strtoupper(trim((string) $country));
+        $country = mb_strtoupper(mb_trim((string) $country));
 
         if ($country === '') {
             return;
@@ -352,7 +352,7 @@ final class PhoneField extends TextInput
     {
         $state = $this->getState();
 
-        if (! is_scalar($state) || trim((string) $state) === '') {
+        if (! is_scalar($state) || mb_trim((string) $state) === '') {
             return null;
         }
 

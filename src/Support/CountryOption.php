@@ -11,8 +11,7 @@ final readonly class CountryOption
         public string $name,
         public int $dialCode,
         public string $flagUrl,
-    ) {
-    }
+    ) {}
 
     public function label(): string
     {

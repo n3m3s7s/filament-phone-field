@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 return [
     'invalid_number' => 'The provided phone number is not valid.',
     'invalid_country' => 'The phone number country is not allowed.',

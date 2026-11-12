@@ -16,8 +16,7 @@ final class PhoneCountryRepository
 
     public function __construct(
         private readonly ?PhoneNumberUtil $phoneNumberUtil = null,
-    ) {
-    }
+    ) {}
 
     public function all(?array $onlyCountries = null): Collection
     {
@@ -58,7 +57,7 @@ final class PhoneCountryRepository
 
         $flagUrl = str_replace(
             '{country}',
-            strtolower($country),
+            mb_strtolower($country),
             (string) config(
                 'filament-phone-field.flag_cdn',
                 'https://cdn.jsdelivr.net/gh/HatScripts/circle-flags@latest/flags/{country}.svg',
@@ -82,7 +81,7 @@ final class PhoneCountryRepository
     }
 
     /**
-     * @param array<int, string> $countries
+     * @param  array<int, string>  $countries
      * @return array<int, string>
      */
     public function normalizeCountries(array $countries): array
@@ -98,11 +97,11 @@ final class PhoneCountryRepository
 
     public function normalizeCountry(?string $country): string
     {
-        return strtoupper(trim((string) $country));
+        return mb_strtoupper(mb_trim((string) $country));
     }
 
     private function countryName(string $country): string
     {
-        return __('filament-phone-field::countries.' . strtoupper($country));
+        return __('filament-phone-field::countries.'.mb_strtoupper($country));
     }
 }

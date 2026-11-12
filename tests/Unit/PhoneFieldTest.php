@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N3m3s7s\FilamentPhoneField\Tests\Unit;
 
 use N3m3s7s\FilamentPhoneField\PhoneField;
 use N3m3s7s\FilamentPhoneField\Tests\TestCase;
 
-class PhoneFieldTest extends TestCase
+final class PhoneFieldTest extends TestCase
 {
     public function test_it_sets_default_values_correctly(): void
     {

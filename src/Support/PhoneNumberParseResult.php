@@ -17,8 +17,7 @@ final readonly class PhoneNumberParseResult
         public ?string $country = null,
         public ?PhoneNumberType $type = null,
         public ?string $error = null,
-    ) {
-    }
+    ) {}
 
     public static function empty(): self
     {

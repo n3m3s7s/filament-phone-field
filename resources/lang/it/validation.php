@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 return [
     'invalid_number' => 'Il numero di telefono fornito non è valido.',
     'invalid_country' => 'La nazione del numero di telefono non è consentita.',

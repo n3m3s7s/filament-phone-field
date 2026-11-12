@@ -12,19 +12,18 @@ use N3m3s7s\FilamentPhoneField\Support\PhoneNumber;
 final readonly class ValidPhoneNumber implements ValidationRule
 {
     /**
-     * @param array<int, string> $countries
+     * @param  array<int, string>  $countries
      */
     public function __construct(
         private array $countries = [],
         private ?string $country = null,
         private PhoneType $type = PhoneType::Any,
         private bool $required = false,
-    ) {
-    }
+    ) {}
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $value = is_scalar($value) ? trim((string) $value) : '';
+        $value = is_scalar($value) ? mb_trim((string) $value) : '';
 
         if ($value === '') {
             if ($this->required) {

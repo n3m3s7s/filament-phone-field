@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace N3m3s7s\FilamentPhoneField\Support;
 
-use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
+use N3m3s7s\FilamentPhoneField\Enums\PhoneType;
 
 final readonly class PhoneNumber
 {
     public function __construct(
         private PhoneNumberUtil $util,
-    ) {
-    }
+    ) {}
 
     public static function make(): self
     {
@@ -28,8 +27,8 @@ final readonly class PhoneNumber
         array $allowedCountries = [],
         PhoneType $type = PhoneType::Any,
     ): PhoneNumberParseResult {
-        $value = trim((string) $value);
-        $country = $country !== null ? strtoupper(trim($country)) : null;
+        $value = mb_trim((string) $value);
+        $country = $country !== null ? mb_strtoupper(mb_trim($country)) : null;
 
         if ($value === '') {
             return PhoneNumberParseResult::empty();
@@ -51,10 +50,10 @@ final readonly class PhoneNumber
             return PhoneNumberParseResult::invalid();
         }
 
-        $detectedCountry = strtoupper($detectedCountry);
+        $detectedCountry = mb_strtoupper($detectedCountry);
 
         $allowedCountries = collect($allowedCountries)
-            ->map(fn (string $country): string => strtoupper(trim($country)))
+            ->map(fn (string $country): string => mb_strtoupper(mb_trim($country)))
             ->filter()
             ->values()
             ->all();

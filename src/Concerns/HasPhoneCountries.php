@@ -8,21 +8,21 @@ use Closure;
 
 trait HasPhoneCountries
 {
-    protected array | Closure | null $countries = null;
+    protected array|Closure|null $countries = null;
 
-    protected string | Closure | null $defaultCountry = null;
+    protected string|Closure|null $defaultCountry = null;
 
     /**
-     * @param array<int, string>|Closure|null $countries
+     * @param  array<int, string>|Closure|null  $countries
      */
-    public function countries(array | Closure | null $countries): self
+    public function countries(array|Closure|null $countries): self
     {
         $this->countries = $countries;
 
         return $this;
     }
 
-    public function defaultCountry(string | Closure | null $country): self
+    public function defaultCountry(string|Closure|null $country): self
     {
         $this->defaultCountry = $country;
 
@@ -42,7 +42,7 @@ trait HasPhoneCountries
 
         return collect($countries)
             ->filter(fn (mixed $country): bool => is_string($country))
-            ->map(fn (string $country): string => strtoupper(trim($country)))
+            ->map(fn (string $country): string => mb_strtoupper(mb_trim($country)))
             ->filter()
             ->unique()
             ->values()
@@ -57,7 +57,7 @@ trait HasPhoneCountries
             $country = config('filament-phone-field.default_country');
         }
 
-        $country = strtoupper(trim((string) $country));
+        $country = mb_strtoupper(mb_trim((string) $country));
 
         return $country !== '' ? $country : null;
     }

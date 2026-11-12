@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N3m3s7s\FilamentPhoneField\Tests\Unit\Rules;
 
 use N3m3s7s\FilamentPhoneField\Rules\ValidPhoneNumber;
 use N3m3s7s\FilamentPhoneField\Tests\TestCase;
 
-class ValidPhoneNumberTest extends TestCase
+final class ValidPhoneNumberTest extends TestCase
 {
     public function test_it_passes_on_empty_values(): void
     {
