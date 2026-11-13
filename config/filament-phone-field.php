@@ -22,7 +22,10 @@ return [
     'default_country' => 'IT',
 
     /**
-     * URL that will be injected in the country combobox to render each country's flag
+     * URL template used to render each country's flag (`{country}` is the lowercase ISO code).
+     * The default points to the flags bundled with the package: publish them with
+     * `php artisan vendor:publish --tag=filament-phone-field-flags` (they land in `public/vendor/filament-phone-field/flags`).
+     * Set an absolute URL here only if you really want to serve the flags from somewhere else.
      */
-    'flag_cdn' => 'https://cdn.jsdelivr.net/gh/HatScripts/circle-flags@latest/flags/{country}.svg',
+    'flag_url' => '/vendor/filament-phone-field/flags/{country}.svg',
 ];

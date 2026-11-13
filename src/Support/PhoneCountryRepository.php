@@ -59,8 +59,8 @@ final class PhoneCountryRepository
             '{country}',
             mb_strtolower($country),
             (string) config(
-                'filament-phone-field.flag_cdn',
-                'https://cdn.jsdelivr.net/gh/HatScripts/circle-flags@latest/flags/{country}.svg',
+                'filament-phone-field.flag_url',
+                '/vendor/filament-phone-field/flags/{country}.svg',
             ),
         );
 

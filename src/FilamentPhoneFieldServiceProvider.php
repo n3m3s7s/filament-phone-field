@@ -23,6 +23,10 @@ final class FilamentPhoneFieldServiceProvider extends ServiceProvider
             ], 'filament-phone-field-views');
 
             $this->publishes([
+                __DIR__.'/../resources/flags' => public_path('vendor/filament-phone-field/flags'),
+            ], 'filament-phone-field-flags');
+
+            $this->publishes([
                 __DIR__.'/../config/filament-phone-field.php' => config_path('filament-phone-field.php'),
             ], 'filament-phone-field-config');
         }

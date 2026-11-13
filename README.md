@@ -8,6 +8,14 @@ A Filament 5 multi-country phone field powered by `giggsey/libphonenumber-for-ph
 composer require n3m3s7s/filament-phone-field
 ```
 
+Publish the bundled flags (circle-flags v2.8.0, MIT; no third-party requests are made):
+
+```bash
+php artisan vendor:publish --tag=filament-phone-field-flags
+```
+
+They are served from `public/vendor/filament-phone-field/flags/{country}.svg`; change `flag_url` in the config to serve them from elsewhere.
+
 Publish config:
 
 ```bash
